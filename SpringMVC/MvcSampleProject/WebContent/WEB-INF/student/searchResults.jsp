@@ -9,11 +9,12 @@
 	</head>
 	<body>
 		<div align="center">
-		<fort style="color: deeppink;"><h1> Student Search Page</h1></fort>
-		<c:url value="/" var="url"/>
-			<form action="${url}get-student-details">
-				<input name="search" value="">
-				<button type="submit">Search</button>
+		<fort style="color: deeppink; font-size: xx-large;"><h1> Student Search Page</h1></fort>
+		<c:url value="/get-student-details" var="url"/>
+		<label style="color: maroon; font-size: x-large;">Search by FirstName or LastName or Email</label></br>
+			<form action="${url}">
+				<input name="search" value="" style="border: double; padding: 8px 74px;"></br></br>
+				<button type="submit" style="padding: 9px 35px;background: aqua;">Search</button>
 			</form>
 			<hr>
 			<c:if test="${isSearchResultPage}">
