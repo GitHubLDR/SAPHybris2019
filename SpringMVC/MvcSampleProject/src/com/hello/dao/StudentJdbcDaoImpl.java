@@ -4,26 +4,29 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Required;
 
 import com.hello.data.dto.StudentData;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 
-public class StudentDaoImpl implements StudentDao
+public class StudentJdbcDaoImpl implements StudentDao
 {
 
 	private DriverManager driverManager;
 	private String dburl;
 	private String dbUser;
 	private String dbPassword;
-	private static Connection connection;
+	private String driverType;
+	
 	
 	@Override
 	public boolean setStudentInfo(StudentData studentData) 
 	{
 		String sql = "INSERT INTO STUDENT (firstName, lastName, email) VALUES (?, ?, ?)";
-		this.dbConnection();
+		Connection connection = this.dbConnection();
 		try{
 			PreparedStatement ps = (PreparedStatement) connection.prepareStatement(sql);
 			ps.setString(1, studentData.getFirstName());
@@ -40,18 +43,15 @@ public class StudentDaoImpl implements StudentDao
 	}
 	
 	@Override
-	public ResultSet getStudentDetails(String search) 
+	public Object getStudentDetails(String search) 
 	{
-		this.dbConnection();
+		Connection connection = this.dbConnection();
 		String selectTableSQL = "SELECT firstName, lastName, email from STUDENT WHERE firstName Like '%"+ search +"%' OR lastName Like '%"+ search +"%' OR email Like '%"+ search +"%'";
 		
 		ResultSet rs = null;
 		PreparedStatement preparedStatement = null;
 		try {
 			preparedStatement = (PreparedStatement) connection.prepareStatement(selectTableSQL);
-		/*	preparedStatement.setString(1, search);
-			preparedStatement.setString(2, search);
-			preparedStatement.setString(3, search);*/
 			rs = preparedStatement.executeQuery(selectTableSQL);
 		} catch (SQLException e) {
 			System.out.println("Unable to search " + search);
@@ -73,36 +73,29 @@ public class StudentDaoImpl implements StudentDao
 	}
 
 	@SuppressWarnings("static-access")
-	public void dbConnection(){
+	public Connection dbConnection(){
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			System.out.println("Where is your MySQL JDBC Driver?");
 			e.printStackTrace();
-			return ;
 		}
-
-		//System.out.println("MySQL JDBC Driver Registered!");
+		Connection connection = null;
 		try {
 			if(connection == null){
-				connection = (Connection) getDriverManager().getConnection(
-																			this.getDburl(), 
-																			this.getDbUser(), 
-																			this.getDbPassword()
-																			);
+				connection = (Connection) getDriverManager().getConnection(this.getDburl(), this.getDbUser(),this.getDbPassword());
 			}
 			
 			if (connection != null) {
 				System.out.println("You made it, take control your database now!");
 			} else {
 				System.out.println("Failed to make connection!");
-				return ;
 			}
 		} catch (SQLException e) {
 			System.out.println("Connection Failed! Check output console");
 			e.printStackTrace();
-			return ;
 		}
+		return connection;
 	}
 	
 	public DriverManager getDriverManager() {
@@ -139,5 +132,14 @@ public class StudentDaoImpl implements StudentDao
 	@Required
 	public void setDbPassword(String dbPassword) {
 		this.dbPassword = dbPassword;
+	}
+
+	public String getDriverType() {
+		return driverType;
+	}
+
+	@Required
+	public void setDriverType(String driverType) {
+		this.driverType = driverType;
 	}
 }

@@ -31,7 +31,7 @@
 				   		</table>
 					</c:when>
 					<c:otherwise>
-						<strong>${searchVal}</strong> Stundet Results not found!!!
+						<h3><strong>${searchVal}</strong> Stundet Results not found!!!</h3>
 					</c:otherwise>
 				</c:choose>
 			</c:if>
