@@ -59,10 +59,7 @@
 	 <extension name='yacceleratorcockpits' />
 	 <extension name='yacceleratorinitialdata' />
 	 <extension name='yacceleratorstorefront' />	
-	
-	
-<extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/mypromotionengine"/>	
--->
+	-->
 <extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/ldr/ldrfulfilmentprocess"/>
 <extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/ldr/ldrcockpits"/>
 <extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/ldr/ldrcore"/>
@@ -70,12 +67,7 @@
 <extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/ldr/ldrtest"/>
 <extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/ldr/ldrinitialdata"/>
 <extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/ldr/ldrstorefront"/>
- 
- 
- <extension name="trainingbackoffice"/>
 
-<!-- <extension name="training"/> -->
-	
 	
   </extensions>
 </hybrisconfig>
