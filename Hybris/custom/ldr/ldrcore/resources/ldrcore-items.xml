@@ -41,13 +41,126 @@
             <value code="YELLOW"/>
         </enumtype>
         
+        <enumtype code="StudentType" autocreate="true" generate="true" dynamic="true">
+			<value code="REGULAR"/>
+			<value code="DISTANCE"></value>
+		</enumtype>
+		
+		<enumtype code="OrderStatus" autocreate="false" generate="true" dynamic="true">
+			<value code="MANUAL_HOLD"/>
+			<value code="ORDER_PACKED"/>
+		</enumtype>
+        
     </enumtypes>
     
+    
+    <maptypes>
+		<maptype argumenttype="java.util.Date" returntype="java.lang.String" code="feedBack"/>
+	</maptypes>
+	
+	
+	<relations>
+		 <relation localized="true" code="Student2CourseRel" autocreate="true" generate="true">
+		 	<deployment table="student2course" typecode="11001"/>
+		 	<sourceElement type="Student" qualifier="students" cardinality="many" collectiontype="set" ordered="true">
+		 		<modifiers write="true" read="true" optional="true" search="true" unique="false"/>
+		 	</sourceElement>
+		 	<targetElement type="Course" qualifier="courses" cardinality="many" collectiontype="set" ordered="true">
+		 		<modifiers write="true" read="true" optional="true" search="true" unique="false"/>
+		 	</targetElement>
+		 </relation>
+		 
+		 <relation localized="false" code="Student2LibarayCardRel" autocreate="true" generate="true">
+		 	<sourceElement type="Student" qualifier="student" cardinality="one" ordered="false">
+		 		<modifiers write="true" read="true" optional="true" search="true" unique="false"/>
+		 	</sourceElement>
+		 	<targetElement type="LibarayCard" qualifier="libraryCards" cardinality="many" collectiontype="set" ordered="true">
+		 		<modifiers write="true" read="true" optional="true" search="true" unique="false"/>
+		 	</targetElement>
+		 </relation>
+	</relations>
 
     <itemtypes>
 
         <!-- Add your item definitions here -->
         
+        <itemtype code="Student" autocreate="true" generate="true">
+			<deployment table="student" typecode="10001"/>
+			 <attributes>
+				<attribute type="java.lang.String" qualifier="id">
+				<modifiers write="true" read="true" optional="false" search="true" unique="true"/>
+					 <persistence type="property"/>
+				</attribute>
+				<attribute type="java.lang.String" qualifier="name">
+				<modifiers write="true" read="true" optional="true" search="true" unique="false"/>
+					 <persistence type="property"/>
+				</attribute>
+				<attribute type="StudentType" qualifier="studentType">
+				<modifiers write="true" read="true" optional="false" search="true" unique="false"/>
+					 <persistence type="property"/>
+				</attribute>
+				<attribute type="hobbiesStringCollection" qualifier="hobbies">
+				<modifiers write="true" read="true" optional="true" search="true" unique="false"/>
+					 <persistence type="property"/>
+				</attribute>				
+				<attribute type="Address" qualifier="address">
+				<modifiers write="true" read="true" optional="true" search="true" unique="false"/>
+					 <persistence type="property"/>
+				</attribute>				
+				<attribute type="localized:java.lang.String" qualifier="localizedName">
+				<modifiers write="true" read="true" optional="true" search="true" unique="false"/>
+						<persistence type="property"/>
+				</attribute>
+				<attribute type="java.lang.String" qualifier="favQuote">
+					<modifiers write="true" read="true" optional="true" search="true" unique="false"/>
+						<persistence type="property" >
+						<columntype database="oracle">
+							<value>CLOB</value>
+						</columntype>
+						<columntype database="mysql">
+							<value>TEXT</value>
+						</columntype>
+						<columntype database="sqlserver">
+							<value>TEXT</value>
+						</columntype>
+						<columntype database="sap">
+							<value>NCLOB</value>
+						</columntype>
+						<columntype>
+							<value>HYBRIS.LONG_STRING</value>
+						</columntype>
+					</persistence>						
+				</attribute>
+							 
+			 </attributes>
+		</itemtype>
+		
+		<itemtype code="Course" autocreate="true" generate="true">
+		<deployment table="course" typecode="10002"/>
+			 <attributes>
+			 	<attribute type="java.lang.String" qualifier="uid">
+			 	<modifiers write="true" read="true" optional="false" search="true" unique="true"/>
+			 		<persistence type="property"/>
+			 	</attribute>
+			 	<attribute type="java.lang.String" qualifier="name">
+			 		<persistence type="property"/>
+			 	</attribute>
+			 </attributes>
+		</itemtype>
+		
+		 <itemtype code="LibarayCard" autocreate="true" generate="true">
+		 	<deployment table="libaraycard" typecode="10003"/>
+		 	<attributes>
+		 		<attribute type="java.lang.String" qualifier="id">
+		 		<modifiers write="true" read="true" optional="false" search="true" unique="true"/>
+		 			<persistence type="property"/>
+		 		</attribute>
+		 		<attribute type="java.util.Date" qualifier="dateOfIssue">
+		 		<modifiers write="true" read="true" optional="false" search="true" unique="false"/>
+		 			<persistence type="property"/>
+		 		</attribute>
+		 	</attributes>
+		 </itemtype>
 
 
         <!-- TypeGroups are for structure of this file only -->
@@ -63,7 +176,29 @@
                         <modifiers/>
                         <persistence type="property"/>
                     </attribute>
+                    <attribute type="Brand" qualifier="brand">
+                    	<description></description>
+                    	<modifiers read="true" write="true" optional="true" search="true"/>
+                    	<persistence type="property"/>
+                    </attribute>
+                    
+                    
                 </attributes>
+            </itemtype>
+            
+            <itemtype code="Brand" autocreate="true" generate="true">
+            	<deployment table="brand" typecode="12010"/>
+            	 <attributes>
+            	 	<attribute type="java.lang.String" qualifier="code">
+						<persistence type="property"/>
+            	 	</attribute>
+            	 	<attribute type="localized:java.lang.String" qualifier="name">
+						<persistence type="property"/>
+            	 	</attribute>
+            	 	<attribute type="java.lang.String" qualifier="description">
+						<persistence type="property"/>
+            	 	</attribute>
+            	 </attributes>
             </itemtype>
 
             <itemtype code="ApparelStyleVariantProduct" extends="VariantProduct"
@@ -88,6 +223,17 @@
                 </attributes>
 
             </itemtype>
+            
+            
+           <itemtype code="StudentRegistrationProcess" extends="StoreFrontCustomerProcess"
+   			 autocreate="true" generate="true">
+   			<attributes>
+   				<attribute type="Student" qualifier="student">
+   					<persistence type="property"/>
+   				</attribute>
+   			</attributes>
+   		 </itemtype>
+            
             
             
 

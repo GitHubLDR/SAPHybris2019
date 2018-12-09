@@ -184,11 +184,47 @@
 		<property name="priceDataFactory" ref="priceDataFactory"/>
 	</bean>
 	
+	<bean id="studentRegistrationEmailContext" class="com.ldr.facades.process.email.context.StudentRegistrationEmailContext" parent="abstractEmailContext" scope="prototype" >
+		<property name="studentConverter" ref="studentConverter"/>
+	</bean>
+	
+
 	<alias name="yacceleratorSearchPagePointOfServiceDistancePopulator" alias="searchPagePointOfServiceDistancePopulator" />
 	<bean id="yacceleratorSearchPagePointOfServiceDistancePopulator" class="com.ldr.facades.storefinder.populators.SearchPagePointOfServiceDistancePopulator" >
 		<property name="pointOfServiceDistanceConverter" ref="pointOfServiceDistanceConverter"/>
 	</bean>
 
 	<bean id="genderData" class="com.ldr.facades.product.data.GenderData" scope="prototype"/>
-		
+	
+	<bean id="studentConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="com.ldr.facades.student.data.StudentData"/>
+		<property name="populators">
+			<list>
+				<ref bean="studentPopulator" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="studentPopulator" class="com.ldr.facades.student.populator.StudentPopulator"/>
+	
+	<alias name="defaultStudentFacade" alias="studentFacade"/>
+	<bean id="defaultStudentFacade" class="com.ldr.facades.student.DefaultStudentFacade">
+		<property name="studentService" ref="studentService"/>
+		<property name="studentConverter" ref="studentConverter"/>
+		<property name="studentReverseConverter" ref="studentReverseConverter"/>
+	</bean>
+	
+	
+	<bean id="studentReverseConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="com.ldr.core.model.StudentModel"/>
+		<property name="populators">
+			<list>
+				<ref bean="studentReversePopulator" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="studentReversePopulator" class="com.ldr.facades.student.populator.StudentReversePopulator"/>
+	
+	
 </beans>

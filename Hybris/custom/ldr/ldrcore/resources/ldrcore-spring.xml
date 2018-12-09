@@ -259,7 +259,12 @@
 		<property name="businessProcessService" ref="businessProcessService"/>
 	</bean>
 	
-
+	
+	<bean id="studentRegistrationEventListener"
+	      class="com.ldr.core.event.StudentRegistrationEventListener" parent="abstractAcceleratorSiteEventListener">
+		<property name="modelService" ref="modelService"/>
+		<property name="businessProcessService" ref="businessProcessService"/>
+	</bean>
 
 	<!-- Process resources definition -->
 
@@ -362,6 +367,10 @@
 		<property name="frontendTemplateName" value="NotPickedUpConsignmentCanceledEmailTemplate"/>
 	</bean>
 	
+	<bean id="generateStudentRegistrationEmail" parent="abstractGenerateEmailAction">
+		<property name="frontendTemplateName" value="StudentRegistrationEmailTemplate"/>
+	</bean>
+
 	<bean id="removeSentEmail"
 	      class="de.hybris.platform.acceleratorservices.process.email.actions.RemoveSentEmailAction"
 	      parent="abstractAction">
@@ -460,6 +469,11 @@
 		<property name="resource" value="classpath:/ldrcore/processes/quote/quote-buyer-process.xml"/>
 	</bean>
 	
+	<bean id="studentRegistrationEmailProcessDefinitionResource" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+   	 <property name="resource" value="classpath:/ldrcore/processes/studentRegistrationEmailProcess.xml" />
+    </bean>
+	
+
 	<bean id="quoteSalesRepProcessDefinitionResource"
 		  class="de.hybris.platform.processengine.definition.ProcessDefinitionResource" >
 		<property name="resource" value="classpath:/ldrcore/processes/quote/quote-salesrep-process.xml"/>
@@ -523,5 +537,25 @@
 
 	<import resource="/ldrcore/processes/quote/quote-post-cancellation-process-spring.xml"/>
 	
-
+	
+	
+	
+	
+	<alias name="defaultStudentDAOImpl" alias="studentDAO"/>
+	<bean id="defaultStudentDAOImpl" class="com.ldr.core.student.dao.StudentDAOImpl">
+		<property name="flexibleSearchService" ref="flexibleSearchService"/>
+		<property name="modelService" ref="modelService"/>
+	</bean>
+	
+	
+	<alias name="defaultStudnetServiceImpl" alias="studentService"/>
+	<bean id="defaultStudnetServiceImpl" class="com.ldr.core.student.service.StudnetServiceImpl">
+		<property name="studentDAO" ref="studentDAO"/>
+		<property name="baseSiteService" ref="baseSiteService"/>
+		<property name="baseStoreService" ref="baseStoreService"/>
+		<property name="eventService" ref="eventService"/>
+		<property name="commonI18NService" ref="commonI18NService"/>
+		
+	</bean>
+	
 </beans>

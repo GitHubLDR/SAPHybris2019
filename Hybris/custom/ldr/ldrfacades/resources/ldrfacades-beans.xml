@@ -20,4 +20,10 @@
 		<property name="name" type="String"/>
 	</bean>
 	
+	
+	<bean class="com.ldr.facades.student.data.StudentData">
+		<property name="name" type="String"/>
+		<property name="id" type="String"/>
+		<property name="email" type="String"/>
+	</bean>
 </beans>
