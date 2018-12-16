@@ -558,4 +558,10 @@
 		
 	</bean>
 	
+	<alias name="defaultBrandCodeValueResolver" alias="brandCodeValueResolver"/>
+	<bean id="defaultBrandCodeValueResolver" class="com.ldr.core.search.solrfacetsearch.provider.BrandCodeValueResolver"/>
+	
+	
+	
+	
 </beans>
