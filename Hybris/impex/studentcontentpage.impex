@@ -1,0 +1,80 @@
+# USE CTRL-SPACE for type-ahead support
+
+
+$contentCatalog=apparel-ukContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Online])[default=$contentCatalog:Online]
+$siteResource=jar:de.hybris.platform.apparelstore.constants.ApparelstoreConstants&/apparelstore/import/sampledata/contentCatalogs/$contentCatalog
+$jarResourceCms=jar:de.hybris.platform.apparelstore.constants.ApparelstoreConstants&/apparelstore/import/sampledata/cockpits/cmscockpit
+
+
+# Create PageTemplates
+# These define the layout for pages
+# "FrontendTemplateName" is used to define the JSP that should be used to render the page for pages with multiple possible layouts.
+# "RestrictedPageTypes" is used to restrict templates to page types
+INSERT_UPDATE PageTemplate;$contentCV[unique=true];uid[unique=true];name;frontendTemplateName;restrictedPageTypes(code);active[default=true]
+;;StudentPageTemplate;Student Page Template;student/studentLayoutPage;ContentPage
+
+
+# Add Velocity templates that are in the CMS Cockpit. These give a better layout for editing pages
+# The FileLoaderValueTranslator loads a File into a String property. The templates could also be inserted in-line in this file.
+#UPDATE PageTemplate;$contentCV[unique=true];uid[unique=true];velocityTemplate[translator=de.hybris.platform.commerceservices.impex.impl.FileLoaderValueTranslator]
+#;;StudentPageTemplate 		;$jarResourceCms/structure-view/structure_studentPageTemplate.vm
+
+# Account Page Template
+# Template used for all of the Account pages
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='StudentPageTemplate'];validComponentTypes(code);compTypeGroup(code)
+;SiteLogo;;;logo
+;HeaderLinks;;;headerlinks
+;SearchBox;;;searchbox
+;MiniCart;;;minicart
+;NavigationBar;;;navigation
+;TopContent;;;wide
+;SideContent;;;narrow
+;BodyContent;;;wide
+;BottomContent;;;wide
+;Footer;;;footer
+;TopHeaderSlot;;;wide
+;BottomHeaderSlot;;;wide
+;PlaceholderContentSlot;;;
+
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV[unique=true];uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='StudentPageTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogoStudentPageTemplate;SiteLogo;;SiteLogoSlot;true
+;;HomepageLinkStudentPageTemplate;HomepageNavLink;;HomepageNavLinkSlot;true
+;;NavigationBarStudentPageTemplate;NavigationBar;;NavigationBarSlot;true
+;;MiniCartStudentPageTemplate;MiniCart;;MiniCartSlot;true
+;;FooterStudentPageTemplate;Footer;;FooterSlot;true
+;;HeaderLinksStudentPageTemplate;HeaderLinks;;HeaderLinksSlot;true
+;;SearchBoxStudentPageTemplate;SearchBox;;SearchBoxSlot;true
+;;TopHeaderSlotStudentPageTemplate;TopHeaderSlot;;TopHeaderSlot;true
+;;BottomHeaderSlotStudentPageTemplate;BottomHeaderSlot;;BottomHeaderSlot;true
+;;PlaceholderContentSlotStudentPageTemplate;PlaceholderContentSlot;;PlaceholderContentSlot;true
+
+
+# Content Pages
+INSERT_UPDATE ContentPage;$contentCV[unique=true];uid[unique=true];name;masterTemplate(uid,$contentCV);label;defaultPage[default='true'];approvalStatus(code)[default='approved'];homepage[default='false'];
+;;studentRegistrationPage;Student Registration Page;StudentPageTemplate;/stureg
+
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef);;;
+;;BodyContentSlot-studentRegistrationPage;Body Content Slot for Student Registration Page;true;StudentRegistrationComponent;;;
+
+
+INSERT_UPDATE JspIncludeComponent;$contentCV[unique=true];uid[unique=true];name;page;actions(uid,$contentCV);&componentRef
+;;StudentRegistrationComponent;Student Registration Component;studentRegistrationComponentPage.jsp;;StudentRegistrationComponent
+
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='studentRegistrationPage'];contentSlot(uid,$contentCV)[unique=true];;;
+;;BodyContentSlotForPage-studentRegistrationPage;BodyContent;;BodyContentSlot-studentRegistrationPage;;;
+
+
+
+
+
+
+
+
+
+
+
+ 

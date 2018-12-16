@@ -1,0 +1,46 @@
+# USE CTRL-SPACE for type-ahead support
+$contentCatalog=apparel-ukContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Online])[default=$contentCatalog:Online]
+$wideContent=CMSImageComponent,BannerComponent
+
+# Import modulegen config properties into impex macros
+UPDATE GenericItem[processor=de.hybris.platform.commerceservices.impex.impl.ConfigPropertyImportProcessor];pk[unique=true]
+$jarResourceCms=$config-jarResourceCmsValue
+$emailPackageName=$config-emailContextPackageName
+$emailResource=$config-emailResourceValue
+
+$lang=en
+
+# Email page Template
+INSERT_UPDATE EmailPageTemplate;$contentCV[unique=true];uid[unique=true];name;active;frontendTemplateName;subject(code);htmlTemplate(code);restrictedPageTypes(code)
+;;StudentRegistrationEmailTemplate;Student Registration Email Template;true;studentRegistrationEmail;apparel-uk_Email_Student_Registration_Subject;apparel-uk_Email_Student_Registration_Body;EmailPage
+
+# Templates for CMS Cockpit Page Edit
+UPDATE EmailPageTemplate;$contentCV[unique=true];uid[unique=true];velocityTemplate[translator=de.hybris.platform.commerceservices.impex.impl.FileLoaderValueTranslator]
+;;StudentRegistrationEmailTemplate;$jarResourceCms/structure-view/structure_studentRegistrationEmailTemplate.vm
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='StudentRegistrationEmailTemplate'];validComponentTypes(code)
+;SiteLogo;;;logo
+;TopContent;;$wideContent;
+;BottomContent;;$wideContent;
+
+# Bind Content Slots to Email Page Templates
+INSERT_UPDATE ContentSlotForTemplate;$contentCV[unique=true];uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='StudentRegistrationEmailTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-StudentRegistrationEmail;SiteLogo;;EmailSiteLogoSlot;true
+;;TopContent-StudentRegistrationEmail;TopContent;;EmailTopSlot;true
+;;BottomContent-StudentRegistrationEmail;BottomContent;;EmailBottomSlot;true
+
+# Customer Registration Email Page
+INSERT_UPDATE EmailPage;$contentCV[unique=true];uid[unique=true];name;masterTemplate(uid,$contentCV);defaultPage;approvalStatus(code)[default='approved'];fromEmail[lang=en];fromName[lang=en]
+;;StudentRegistrationEmail;Student Registration Email;StudentRegistrationEmailTemplate;true;;customerservices@hybris.com;Customer Services Team
+
+
+# Email velocity templates
+INSERT_UPDATE RendererTemplate;code[unique=true];contextClass;rendererType(code)[default='velocity']
+;apparel-uk_Email_Student_Registration_Body;$emailPackageName.StudentRegistrationEmailContext
+;apparel-uk_Email_Student_Registration_Subject;$emailPackageName.StudentRegistrationEmailContext
+
+# CMS components and Email velocity templates
+UPDATE RendererTemplate;code[unique=true];description[lang=$lang];templateScript[lang=$lang,translator=de.hybris.platform.commerceservices.impex.impl.FileLoaderValueTranslator]
+ ;apparel-uk_Email_Student_Registration_Body;"Student Registration Email Body";$emailResource/email-studentRegistrationBody.vm
+ ;apparel-uk_Email_Student_Registration_Subject;"Student Registration Email Subject";$emailResource/email-studentRegistrationSubject.vm
