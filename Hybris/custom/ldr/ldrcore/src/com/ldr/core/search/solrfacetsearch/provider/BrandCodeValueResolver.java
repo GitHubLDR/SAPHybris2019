@@ -14,6 +14,8 @@ import de.hybris.platform.variants.model.VariantProductModel;
 import java.util.Collection;
 
 import com.ldr.core.model.ApparelProductModel;
+import com.ldr.core.model.ApparelSizeVariantProductModel;
+import com.ldr.core.model.ApparelStyleVariantProductModel;
 
 
 /**
@@ -24,6 +26,7 @@ public class BrandCodeValueResolver implements ValueResolver<ProductModel>
 {
 
 	/*
+	 * (non-Javadoc)
 	 *
 	 * @see
 	 * de.hybris.platform.solrfacetsearch.provider.ValueResolver#resolve(de.hybris.platform.solrfacetsearch.indexer.spi.
@@ -35,7 +38,6 @@ public class BrandCodeValueResolver implements ValueResolver<ProductModel>
 			final Collection<IndexedProperty> indexedProperty, final ProductModel productModel) throws FieldValueProviderException
 	{
 		inputDocument.addField(indexedProperty.iterator().next(), getBrandFromBaseProduct(productModel));
-
 	}
 
 	/**
@@ -47,13 +49,44 @@ public class BrandCodeValueResolver implements ValueResolver<ProductModel>
 
 		if (productModel instanceof VariantProductModel)
 		{
-			final ProductModel productModel1 = ((VariantProductModel) productModel).getBaseProduct();
-			if (productModel1 instanceof ApparelProductModel && null != ((ApparelProductModel) productModel1).getBrand())
+
+			if (productModel instanceof ApparelSizeVariantProductModel)
 			{
-				return ((ApparelProductModel) productModel1).getBrand().getCode();
+				final ProductModel productModel1 = ((VariantProductModel) productModel).getBaseProduct();
+
+				if (productModel1 instanceof ApparelStyleVariantProductModel)
+				{
+					final ApparelStyleVariantProductModel apparelStyleVariantProductModel = (ApparelStyleVariantProductModel) productModel1;
+					final ProductModel productModel2 = apparelStyleVariantProductModel.getBaseProduct();
+					return sendBrandCode(productModel2);
+				}
+				else if (null != ((ApparelProductModel) productModel1).getBrand())
+				{
+					return sendBrandCode(productModel1);
+				}
+
 			}
+			else if (productModel instanceof ApparelStyleVariantProductModel)
+			{
+				final ProductModel productModel1 = ((VariantProductModel) productModel).getBaseProduct();
+				return sendBrandCode(productModel1);
+			}
+
 		}
 		else if (null != ((ApparelProductModel) productModel).getBrand())
+		{
+			return sendBrandCode(productModel);
+		}
+		return null;
+	}
+
+	/**
+	 * @param productModel2
+	 * @return
+	 */
+	private String sendBrandCode(final ProductModel productModel)
+	{
+		if (null != ((ApparelProductModel) productModel).getBrand())
 		{
 			return ((ApparelProductModel) productModel).getBrand().getCode();
 		}
