@@ -39,5 +39,59 @@
             </bo:group>
         </bo:actions>
     </context>
- 
-</config>
+      <context component="explorer-tree">
+        <explorer-tree:explorer-tree xmlns:explorer-tree="http://www.hybris.com/cockpitng/config/explorertree" xmlns="http://www.hybris.com/cockpitng/config/explorertree">
+            <navigation-node id="uHireApparel">
+                <type-node code="Student" id="Student"/>
+             </navigation-node>
+         </explorer-tree:explorer-tree>
+       </context>
+      
+       <context type="Student" component="listview" merge-by="type">
+        <list-view:list-view xmlns:list-view="http://www.hybris.com/cockpitng/component/listView" xmlns="http://www.hybris.com/cockpitng/component/listView">
+            <column qualifier="id"/>
+            <column qualifier="name"/>
+            <column qualifier="studentType"/>
+            <column qualifier="hobbies"/>
+        </list-view:list-view>
+    </context>
+    
+    <context type="Student" component="advanced-search" merge-by="type">
+        <advanced-search:advanced-search xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch" xmlns="http://www.hybris.com/cockpitng/config/advancedsearch">
+            <field-list>
+                <field name="id" selected="true"/>
+                <field name="name" selected="true"/>
+                <field name="studentType" selected="true"/>
+                <field name="hobbies" selected="false"/>
+            </field-list>
+        </advanced-search:advanced-search>
+    </context>
+    <context type="Student" component="base" merge-by="type">
+        <y:base xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+            <y:labels>
+                <y:label>id+ ':' +name</y:label>
+            </y:labels>
+        </y:base>
+    </context>
+     <context type="Student" component="editor-area" merge-by="type">
+        <editorArea:editorArea xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea" xmlns="http://www.hybris.com/cockpitng/component/editorArea">
+            <tab name="hmc.tab.tag.properties">
+                <section name="hmc.section.tag.mandatory">
+                	<attribute qualifier="id"/>
+                    <attribute qualifier="name"/>
+                </section>                
+            </tab>
+            <tab name="hmc.tab.tag.address">
+                <section name="hmc.section.tag.address">
+                	<attribute qualifier="address"/>
+                </section>                
+            </tab>
+            <tab name="hmc.tab.tag.libraryCards">
+                <section name="hmc.section.tag.libraryCards">
+                	<attribute qualifier="libraryCards"/>
+                </section>                
+            </tab>
+        </editorArea:editorArea>
+    </context>   
+         
+ </config>
