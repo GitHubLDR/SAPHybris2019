@@ -129,5 +129,13 @@
 	<classpathentry exported="true" kind="src" path="/basecommerce"/>
 	<classpathentry exported="true" kind="src" path="/personalizationwebservices"/>
 	<classpathentry exported="true" kind="src" path="/promotionsbackoffice"/>
+	<classpathentry exported="true" kind="src" path="/warehousingfacades"/>
+	<classpathentry exported="true" kind="src" path="/ordermanagementwebservices"/>
+	<classpathentry exported="true" kind="src" path="/ordermanagementaddon"/>
+	<classpathentry exported="true" kind="src" path="/warehousingbackoffice"/>
+	<classpathentry exported="true" kind="src" path="/consignmenttrackingservices"/>
+	<classpathentry exported="true" kind="src" path="/warehousingwebservices"/>
+	<classpathentry exported="true" kind="src" path="/warehousing"/>
+	<classpathentry exported="true" kind="src" path="/instore"/>
 	<classpathentry kind="output" path="eclipsebin/notused"/>
 </classpath>
