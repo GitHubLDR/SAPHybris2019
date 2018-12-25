@@ -60,6 +60,17 @@
 	 <extension name='yacceleratorinitialdata' />
 	 <extension name='yacceleratorstorefront' />	
 	-->
+	
+	<extension name='ordermanagementaddon' />
+    <extension name='orderselfserviceaddon' />
+    <extension name='ordermanagementwebservices' />
+    <extension name='warehousing' />
+    <extension name='warehousingbackoffice' />
+    <extension name='warehousingwebservices' />
+    <extension name='instore' />
+	
+    <extension name='promotionengineservices' />
+	
 <extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/ldr/ldrfulfilmentprocess"/>
 <extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/ldr/ldrcockpits"/>
 <extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/ldr/ldrcore"/>
@@ -67,6 +78,8 @@
 <extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/ldr/ldrtest"/>
 <extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/ldr/ldrinitialdata"/>
 <extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/ldr/ldrstorefront"/>
+
+<extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/ldr/ldrpromotions"/>
 
 	
   </extensions>

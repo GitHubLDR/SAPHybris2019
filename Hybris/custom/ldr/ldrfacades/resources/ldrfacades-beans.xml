@@ -26,4 +26,9 @@
 		<property name="id" type="String"/>
 		<property name="email" type="String"/>
 	</bean>
+	
+	<bean class="de.hybris.platform.ruleengineservices.rao.AbstractOrderRAO">
+		<property name="newCustomer" type="java.lang.Boolean"/>
+	</bean>
+	
 </beans>
