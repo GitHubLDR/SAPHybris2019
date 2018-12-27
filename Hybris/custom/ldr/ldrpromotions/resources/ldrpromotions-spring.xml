@@ -90,7 +90,9 @@
         <property name="flexibleSearchService" ref="flexibleSearchService"/>
     </bean>
     
-    <bean id="qualifyingNewCustomerConditionTranslator" class="com.ldr.core.ruledefinitions.conditions.NewCustomerConditionTranslator"/>
+    <bean id="qualifyingNewCustomerConditionTranslator" class="com.ldr.promotions.ruledefinitions.conditions.NewCustomerConditionTranslator"/>
+    <bean id="apparelProductConditionTransalator" class="com.ldr.promotions.ruledefinitions.conditions.ApparelProductConditionTransalator"/>
+    
     
     <alias name="apparelCartRaoPopulator" alias="cartRaoPopulator" />
     <bean id="apparelCartRaoPopulator" class="com.ldr.promotions.ruleengineservices.converters.populator.ApparelCartRaoPopulator" parent="defaultCartRaoPopulator">
