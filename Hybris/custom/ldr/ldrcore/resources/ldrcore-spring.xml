@@ -585,4 +585,7 @@
 	<alias name="defaultCustomerAgeDynamicAttributHandler" alias="customerAgeDynamicAttributHandler"/>
 	<bean id="defaultCustomerAgeDynamicAttributHandler" class="com.ldr.core.attributehandler.CustomerAgeDynamicAttributHandler"/>
 	
+	<alias name="ldrCustomerAccountServiceImpl" alias="customerAccountService"/>
+	<bean id="ldrCustomerAccountServiceImpl" class="de.hybris.platform.commerceservices.customer.impl.LDRCustomerAccountServiceImpl" parent="defaultCustomerAccountService"/>
+	
 </beans>

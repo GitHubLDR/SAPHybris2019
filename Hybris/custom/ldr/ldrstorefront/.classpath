@@ -137,5 +137,6 @@
 	<classpathentry exported="true" kind="src" path="/warehousingwebservices"/>
 	<classpathentry exported="true" kind="src" path="/warehousing"/>
 	<classpathentry exported="true" kind="src" path="/instore"/>
+	<classpathentry exported="true" kind="src" path="/wishlist"/>
 	<classpathentry kind="output" path="eclipsebin/notused"/>
 </classpath>

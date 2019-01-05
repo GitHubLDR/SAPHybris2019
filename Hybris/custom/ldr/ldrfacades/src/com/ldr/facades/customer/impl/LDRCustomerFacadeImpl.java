@@ -6,8 +6,10 @@ package com.ldr.facades.customer.impl;
 import static de.hybris.platform.servicelayer.util.ServicesUtil.validateParameterNotNullStandardMessage;
 
 import de.hybris.platform.commercefacades.customer.impl.DefaultCustomerFacade;
+import de.hybris.platform.commercefacades.user.data.CustomerData;
 import de.hybris.platform.commercefacades.user.data.RegisterData;
 import de.hybris.platform.commerceservices.customer.DuplicateUidException;
+import de.hybris.platform.commerceservices.customer.impl.LDRCustomerAccountService;
 import de.hybris.platform.core.model.user.CustomerModel;
 import de.hybris.platform.core.model.user.TitleModel;
 
@@ -19,8 +21,11 @@ import org.springframework.util.Assert;
  * @author devreddy
  *
  */
-public class LDRCustomerFacade extends DefaultCustomerFacade
+public class LDRCustomerFacadeImpl extends DefaultCustomerFacade
 {
+
+	private LDRCustomerAccountService ldrCustomerAccountService;
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -50,6 +55,42 @@ public class LDRCustomerFacade extends DefaultCustomerFacade
 		newCustomer.setSessionCurrency(getCommonI18NService().getCurrentCurrency());
 		newCustomer.setDateOfBirth(registerData.getDateOfBirth());
 		newCustomer.setMobileNumber(registerData.getMobileNumber());
-		getCustomerAccountService().register(newCustomer, registerData.getPassword());
+		getLdrCustomerAccountService().register(newCustomer, registerData.getPassword());
 	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see de.hybris.platform.commercefacades.customer.impl.DefaultCustomerFacade#updateProfile(de.hybris.platform.
+	 * commercefacades.user.data.CustomerData)
+	 */
+	@Override
+	public void updateProfile(final CustomerData customerData) throws DuplicateUidException
+	{
+		validateDataBeforeUpdate(customerData);
+
+		final String name = getCustomerNameStrategy().getName(customerData.getFirstName(), customerData.getLastName());
+		final CustomerModel customer = getCurrentSessionCustomer();
+		customer.setOriginalUid(customerData.getDisplayUid());
+		getLdrCustomerAccountService().updateProfile(customer, customerData.getTitleCode(), name, customerData.getUid(),
+				customerData.getDateOfBirth(), customerData.getMobileNumber());
+	}
+
+	/**
+	 * @return the ldrCustomerAccountService
+	 */
+	public LDRCustomerAccountService getLdrCustomerAccountService()
+	{
+		return ldrCustomerAccountService;
+	}
+
+	/**
+	 * @param ldrCustomerAccountService
+	 *           the ldrCustomerAccountService to set
+	 */
+	public void setLdrCustomerAccountService(final LDRCustomerAccountService ldrCustomerAccountService)
+	{
+		this.ldrCustomerAccountService = ldrCustomerAccountService;
+	}
+
 }

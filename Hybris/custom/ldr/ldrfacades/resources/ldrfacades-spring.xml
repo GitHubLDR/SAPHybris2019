@@ -227,6 +227,12 @@
 	<bean id="studentReversePopulator" class="com.ldr.facades.student.populator.StudentReversePopulator"/>
 	
 	<alias name="ldrCustomerFacade" alias="customerFacade"/>
-	<bean id="ldrCustomerFacade" class="com.ldr.facades.customer.impl.LDRCustomerFacade" parent="defaultCustomerFacade"/>
+	<bean id="ldrCustomerFacade" class="com.ldr.facades.customer.impl.LDRCustomerFacadeImpl" parent="defaultCustomerFacade">
+		 <property name="ldrCustomerAccountService" ref="customerAccountService"/>
+	</bean>
+	
+	
+	<alias name="ldrCustomerPopulator" alias="customerPopulator"/>
+	<bean id="ldrCustomerPopulator" class="com.ldr.facades.populators.LDRCustomerPopulator" parent="defaultCustomerPopulator"/>
 	
 </beans>

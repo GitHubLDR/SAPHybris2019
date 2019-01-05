@@ -10,33 +10,6 @@
  */
 package com.ldr.storefront.controllers.pages;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.Resource;
-
-import de.hybris.platform.servicelayer.exceptions.AmbiguousIdentifierException;
-import de.hybris.platform.servicelayer.exceptions.ModelNotFoundException;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import de.hybris.platform.acceleratorfacades.ordergridform.OrderGridFormFacade;
 import de.hybris.platform.acceleratorfacades.product.data.ReadOnlyOrderGridData;
 import de.hybris.platform.acceleratorstorefrontcommons.annotations.RequireHardLogIn;
@@ -48,11 +21,9 @@ import de.hybris.platform.acceleratorstorefrontcommons.controllers.util.GlobalMe
 import de.hybris.platform.acceleratorstorefrontcommons.forms.AddressForm;
 import de.hybris.platform.acceleratorstorefrontcommons.forms.UpdateEmailForm;
 import de.hybris.platform.acceleratorstorefrontcommons.forms.UpdatePasswordForm;
-import de.hybris.platform.acceleratorstorefrontcommons.forms.UpdateProfileForm;
 import de.hybris.platform.acceleratorstorefrontcommons.forms.validation.AddressValidator;
 import de.hybris.platform.acceleratorstorefrontcommons.forms.validation.EmailValidator;
 import de.hybris.platform.acceleratorstorefrontcommons.forms.validation.PasswordValidator;
-import de.hybris.platform.acceleratorstorefrontcommons.forms.validation.ProfileValidator;
 import de.hybris.platform.acceleratorstorefrontcommons.forms.verification.AddressVerificationResultHandler;
 import de.hybris.platform.acceleratorstorefrontcommons.util.AddressDataUtil;
 import de.hybris.platform.cms2.exceptions.CMSItemNotFoundException;
@@ -78,9 +49,41 @@ import de.hybris.platform.commerceservices.customer.DuplicateUidException;
 import de.hybris.platform.commerceservices.search.pagedata.PageableData;
 import de.hybris.platform.commerceservices.search.pagedata.SearchPageData;
 import de.hybris.platform.commerceservices.util.ResponsiveUtils;
+import de.hybris.platform.servicelayer.exceptions.AmbiguousIdentifierException;
+import de.hybris.platform.servicelayer.exceptions.ModelNotFoundException;
 import de.hybris.platform.servicelayer.exceptions.UnknownIdentifierException;
 import de.hybris.platform.util.Config;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.Resource;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.ldr.storefront.controllers.ControllerConstants;
+import com.ldr.storefront.forms.LDRUpdateProfileForm;
+import com.ldr.storefront.validator.LDRProfileValidator;
 
 
 /**
@@ -164,8 +167,8 @@ public class AccountPageController extends AbstractSearchPageController
 	@Resource(name = "addressValidator")
 	private AddressValidator addressValidator;
 
-	@Resource(name = "profileValidator")
-	private ProfileValidator profileValidator;
+	@Resource(name = "ldrProfileValidator")
+	private LDRProfileValidator profileValidator;
 
 	@Resource(name = "emailValidator")
 	private EmailValidator emailValidator;
@@ -198,7 +201,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return addressValidator;
 	}
 
-	protected ProfileValidator getProfileValidator()
+	protected LDRProfileValidator getProfileValidator()
 	{
 		return profileValidator;
 	}
@@ -295,8 +298,7 @@ public class AccountPageController extends AbstractSearchPageController
 	@RequireHardLogIn
 	public String orders(@RequestParam(value = "page", defaultValue = "0") final int page,
 			@RequestParam(value = "show", defaultValue = "Page") final ShowMode showMode,
-			@RequestParam(value = "sort", required = false) final String sortCode, final Model model)
-			throws CMSItemNotFoundException
+			@RequestParam(value = "sort", required = false) final String sortCode, final Model model) throws CMSItemNotFoundException
 	{
 		// Handle paged search results
 		final PageableData pageableData = createPageableData(page, 5, sortCode, showMode);
@@ -321,8 +323,8 @@ public class AccountPageController extends AbstractSearchPageController
 			model.addAttribute("orderData", orderDetails);
 
 			final List<Breadcrumb> breadcrumbs = accountBreadcrumbBuilder.getBreadcrumbs(null);
-			breadcrumbs.add(new Breadcrumb("/my-account/orders", getMessageSource().getMessage("text.account.orderHistory", null,
-					getI18nService().getCurrentLocale()), null));
+			breadcrumbs.add(new Breadcrumb("/my-account/orders",
+					getMessageSource().getMessage("text.account.orderHistory", null, getI18nService().getCurrentLocale()), null));
 			breadcrumbs.add(new Breadcrumb("#", getMessageSource().getMessage("text.account.order.orderBreadcrumb", new Object[]
 			{ orderDetails.getCode() }, "Order {0}", getI18nService().getCurrentLocale()), null));
 			model.addAttribute(BREADCRUMBS_ATTR, breadcrumbs);
@@ -340,7 +342,8 @@ public class AccountPageController extends AbstractSearchPageController
 		return getViewForPage(model);
 	}
 
-	@RequestMapping(value = "/order/" + ORDER_CODE_PATH_VARIABLE_PATTERN + "/getReadOnlyProductVariantMatrix", method = RequestMethod.GET)
+	@RequestMapping(value = "/order/" + ORDER_CODE_PATH_VARIABLE_PATTERN
+			+ "/getReadOnlyProductVariantMatrix", method = RequestMethod.GET)
 	@RequireHardLogIn
 	public String getProductVariantMatrixForResponsive(@PathVariable("orderCode") final String orderCode,
 			@RequestParam("productCode") final String productCode, final Model model)
@@ -473,11 +476,14 @@ public class AccountPageController extends AbstractSearchPageController
 		model.addAttribute(TITLE_DATA_ATTR, userFacade.getTitles());
 
 		final CustomerData customerData = customerFacade.getCurrentCustomer();
-		final UpdateProfileForm updateProfileForm = new UpdateProfileForm();
+		final LDRUpdateProfileForm updateProfileForm = new LDRUpdateProfileForm();
 
 		updateProfileForm.setTitleCode(customerData.getTitleCode());
 		updateProfileForm.setFirstName(customerData.getFirstName());
 		updateProfileForm.setLastName(customerData.getLastName());
+		updateProfileForm.setMobileNumber(customerData.getMobileNumber());
+		final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/mm/dd");
+		updateProfileForm.setDateOfBirth(simpleDateFormat.format(customerData.getDateOfBirth()));
 
 		model.addAttribute("updateProfileForm", updateProfileForm);
 
@@ -491,31 +497,49 @@ public class AccountPageController extends AbstractSearchPageController
 
 	@RequestMapping(value = "/update-profile", method = RequestMethod.POST)
 	@RequireHardLogIn
-	public String updateProfile(final UpdateProfileForm updateProfileForm, final BindingResult bindingResult, final Model model,
+	public String updateProfile(final LDRUpdateProfileForm updateProfileForm, final BindingResult bindingResult, final Model model,
 			final RedirectAttributes redirectAttributes) throws CMSItemNotFoundException
 	{
 		getProfileValidator().validate(updateProfileForm, bindingResult);
 
+		final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/mm/dd");
 		String returnAction = REDIRECT_TO_UPDATE_PROFILE;
 		final CustomerData currentCustomerData = customerFacade.getCurrentCustomer();
-		final CustomerData customerData = new CustomerData();
-		customerData.setTitleCode(updateProfileForm.getTitleCode());
-		customerData.setFirstName(updateProfileForm.getFirstName());
-		customerData.setLastName(updateProfileForm.getLastName());
-		customerData.setUid(currentCustomerData.getUid());
-		customerData.setDisplayUid(currentCustomerData.getDisplayUid());
-
 		model.addAttribute(TITLE_DATA_ATTR, userFacade.getTitles());
-
-		storeCmsPageInModel(model, getContentPageForLabelOrId(UPDATE_PROFILE_CMS_PAGE));
-		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(UPDATE_PROFILE_CMS_PAGE));
 
 		if (bindingResult.hasErrors())
 		{
+			updateProfileForm.setTitleCode(currentCustomerData.getTitle());
+			updateProfileForm.setFirstName(currentCustomerData.getFirstName());
+			updateProfileForm.setLastName(currentCustomerData.getLastName());
+			updateProfileForm.setMobileNumber(currentCustomerData.getMobileNumber());
+			updateProfileForm.setDateOfBirth(simpleDateFormat.format(currentCustomerData.getDateOfBirth()));
+			model.addAttribute("updateProfileForm", updateProfileForm);
 			returnAction = setErrorMessagesAndCMSPage(model, UPDATE_PROFILE_CMS_PAGE);
 		}
 		else
 		{
+			final CustomerData customerData = new CustomerData();
+			customerData.setTitleCode(updateProfileForm.getTitleCode());
+			customerData.setFirstName(updateProfileForm.getFirstName());
+			customerData.setLastName(updateProfileForm.getLastName());
+			customerData.setMobileNumber(updateProfileForm.getMobileNumber());
+
+			try
+			{
+				customerData.setDateOfBirth(simpleDateFormat.parse(updateProfileForm.getDateOfBirth()));
+			}
+			catch (final ParseException e1)
+			{
+				e1.printStackTrace();
+			}
+			customerData.setUid(currentCustomerData.getUid());
+			customerData.setDisplayUid(currentCustomerData.getDisplayUid());
+
+
+			storeCmsPageInModel(model, getContentPageForLabelOrId(UPDATE_PROFILE_CMS_PAGE));
+			setUpMetaDataForContentPage(model, getContentPageForLabelOrId(UPDATE_PROFILE_CMS_PAGE));
+
 			try
 			{
 				customerFacade.updateProfile(customerData);
@@ -528,10 +552,12 @@ public class AccountPageController extends AbstractSearchPageController
 				bindingResult.rejectValue("email", "registration.error.account.exists.title");
 				returnAction = setErrorMessagesAndCMSPage(model, UPDATE_PROFILE_CMS_PAGE);
 			}
+
+
+			model.addAttribute(BREADCRUMBS_ATTR, accountBreadcrumbBuilder.getBreadcrumbs(TEXT_ACCOUNT_PROFILE));
 		}
 
 
-		model.addAttribute(BREADCRUMBS_ATTR, accountBreadcrumbBuilder.getBreadcrumbs(TEXT_ACCOUNT_PROFILE));
 		return returnAction;
 	}
 
@@ -553,8 +579,8 @@ public class AccountPageController extends AbstractSearchPageController
 
 	@RequestMapping(value = "/update-password", method = RequestMethod.POST)
 	@RequireHardLogIn
-	public String updatePassword(final UpdatePasswordForm updatePasswordForm, final BindingResult bindingResult,
-			final Model model, final RedirectAttributes redirectAttributes) throws CMSItemNotFoundException
+	public String updatePassword(final UpdatePasswordForm updatePasswordForm, final BindingResult bindingResult, final Model model,
+			final RedirectAttributes redirectAttributes) throws CMSItemNotFoundException
 	{
 		getPasswordValidator().validate(updatePasswordForm, bindingResult);
 		if (!bindingResult.hasErrors())
@@ -622,10 +648,11 @@ public class AccountPageController extends AbstractSearchPageController
 		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(ADD_EDIT_ADDRESS_CMS_PAGE));
 
 		final List<Breadcrumb> breadcrumbs = accountBreadcrumbBuilder.getBreadcrumbs(null);
-		breadcrumbs.add(new Breadcrumb(MY_ACCOUNT_ADDRESS_BOOK_URL, getMessageSource().getMessage(TEXT_ACCOUNT_ADDRESS_BOOK, null,
-				getI18nService().getCurrentLocale()), null));
-		breadcrumbs.add(new Breadcrumb("#", getMessageSource().getMessage("text.account.addressBook.addEditAddress", null,
-				getI18nService().getCurrentLocale()), null));
+		breadcrumbs.add(new Breadcrumb(MY_ACCOUNT_ADDRESS_BOOK_URL,
+				getMessageSource().getMessage(TEXT_ACCOUNT_ADDRESS_BOOK, null, getI18nService().getCurrentLocale()), null));
+		breadcrumbs.add(new Breadcrumb("#",
+				getMessageSource().getMessage("text.account.addressBook.addEditAddress", null, getI18nService().getCurrentLocale()),
+				null));
 		model.addAttribute(BREADCRUMBS_ATTR, breadcrumbs);
 		model.addAttribute(ThirdPartyConstants.SeoRobots.META_ROBOTS, ThirdPartyConstants.SeoRobots.NOINDEX_NOFOLLOW);
 		return getViewForPage(model);
@@ -745,10 +772,11 @@ public class AccountPageController extends AbstractSearchPageController
 		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(ADD_EDIT_ADDRESS_CMS_PAGE));
 
 		final List<Breadcrumb> breadcrumbs = accountBreadcrumbBuilder.getBreadcrumbs(null);
-		breadcrumbs.add(new Breadcrumb(MY_ACCOUNT_ADDRESS_BOOK_URL, getMessageSource().getMessage(TEXT_ACCOUNT_ADDRESS_BOOK, null,
-                getI18nService().getCurrentLocale()), null));
-		breadcrumbs.add(new Breadcrumb("#", getMessageSource().getMessage("text.account.addressBook.addEditAddress", null,
-                getI18nService().getCurrentLocale()), null));
+		breadcrumbs.add(new Breadcrumb(MY_ACCOUNT_ADDRESS_BOOK_URL,
+				getMessageSource().getMessage(TEXT_ACCOUNT_ADDRESS_BOOK, null, getI18nService().getCurrentLocale()), null));
+		breadcrumbs.add(new Breadcrumb("#",
+				getMessageSource().getMessage("text.account.addressBook.addEditAddress", null, getI18nService().getCurrentLocale()),
+				null));
 		model.addAttribute(BREADCRUMBS_ATTR, breadcrumbs);
 		model.addAttribute(ThirdPartyConstants.SeoRobots.META_ROBOTS, ThirdPartyConstants.SeoRobots.NOINDEX_NOFOLLOW);
 		model.addAttribute("edit", Boolean.TRUE);
@@ -800,7 +828,7 @@ public class AccountPageController extends AbstractSearchPageController
 		userFacade.editAddress(newAddress);
 
 		GlobalMessages.addFlashMessage(redirectModel, GlobalMessages.CONF_MESSAGES_HOLDER, "account.confirmation.address.updated",
-                null);
+				null);
 		return REDIRECT_TO_EDIT_ADDRESS_PAGE + newAddress.getId();
 	}
 
@@ -893,7 +921,7 @@ public class AccountPageController extends AbstractSearchPageController
 	{
 		userFacade.unlinkCCPaymentInfo(paymentMethodId);
 		GlobalMessages.addFlashMessage(redirectAttributes, GlobalMessages.CONF_MESSAGES_HOLDER,
-                "text.account.profile.paymentCart.removed");
+				"text.account.profile.paymentCart.removed");
 		return REDIRECT_TO_PAYMENT_INFO_PAGE;
 	}
 

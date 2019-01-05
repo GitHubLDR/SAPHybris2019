@@ -65,5 +65,22 @@
     </bean>
 
 	-->
+	
+	<bean class="de.hybris.platform.ruleengineservices.rao.AbstractOrderRAO">
+		<property name="newCustomer" type="java.lang.Boolean"/>
+	</bean>
+	
+	
+	<bean class="de.hybris.platform.promotionenginetrail.rao.CustomerReviewRAO">
+		<property name="product" type="de.hybris.platform.ruleengineservices.rao.ProductRAO"/>
+	</bean>
+	
+	<bean class="de.hybris.platform.ruleengineservices.rao.UserRAO">
+	    <property name="customerReviews" type="java.util.List&lt;de.hybris.platform.promotionenginetrail.rao.CustomerReviewRAO&gt;"/>
+	</bean>
+	
+	<bean class="de.hybris.platform.ruleengineservices.rao.ChangeUserGroupRAO" extends="de.hybris.platform.ruleengineservices.rao.AbstractRuleActionRAO">
+    	<property name="userGroupId" type="String" />
+	</bean>
 
 </beans>
