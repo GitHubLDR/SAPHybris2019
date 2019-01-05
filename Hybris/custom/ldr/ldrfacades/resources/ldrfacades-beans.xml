@@ -27,8 +27,15 @@
 		<property name="email" type="String"/>
 	</bean>
 	
-	<bean class="de.hybris.platform.ruleengineservices.rao.AbstractOrderRAO">
-		<property name="newCustomer" type="java.lang.Boolean"/>
+	<bean class="de.hybris.platform.commercefacades.user.data.CustomerData">
+		<property name="dateOfBirth" type="java.util.Date"/>
+		<property name="age" type="java.lang.Integer"/>
+		<property name="mobileNumber" type="String"/>
+	</bean>
+	
+	<bean class="de.hybris.platform.commercefacades.user.data.RegisterData">
+		<property name="dateOfBirth" type="java.util.Date"/>
+		<property name="mobileNumber" type="String"/>
 	</bean>
 	
 </beans>

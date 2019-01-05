@@ -226,5 +226,7 @@
 	
 	<bean id="studentReversePopulator" class="com.ldr.facades.student.populator.StudentReversePopulator"/>
 	
+	<alias name="ldrCustomerFacade" alias="customerFacade"/>
+	<bean id="ldrCustomerFacade" class="com.ldr.facades.customer.impl.LDRCustomerFacade" parent="defaultCustomerFacade"/>
 	
 </beans>

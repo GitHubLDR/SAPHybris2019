@@ -557,18 +557,32 @@
 		<property name="commonI18NService" ref="commonI18NService"/>
 		
 	</bean>
-	
-	<alias name="defaultBrandCodeValueResolver" alias="brandCodeValueResolver"/>
-	<bean id="defaultBrandCodeValueResolver" class="com.ldr.core.search.solrfacetsearch.provider.BrandCodeValueResolver"/>
-	
-	<alias name="apparelUserDaoImpl" alias="userDao"/>
-	 <bean id="apparelUserDaoImpl" class="com.ldr.core.user.daos.impl.ApparelUserDaoImpl"/>
-	 
-	 
-	 <alias name="apparelUserServiceImpl" alias="userService"/>
-	 <bean id="apparelUserServiceImpl" class="com.ldr.core.user.impl.ApparelUserServiceImpl"  parent="defaultUserService">
-	 	<property name="apparelUserDao" ref="userDao"/>
-	 </bean>
-	
+
+	<alias name="defaultBrandCodeValueResolver" alias="brandCodeValueResolver" />
+	<bean id="defaultBrandCodeValueResolver"
+		class="com.ldr.core.search.solrfacetsearch.provider.BrandCodeValueResolver" />
+
+	<alias name="apparelUserDaoImpl" alias="userDao" />
+	<bean id="apparelUserDaoImpl" class="com.ldr.core.user.daos.impl.ApparelUserDaoImpl" />
+
+
+	<alias name="apparelUserServiceImpl" alias="userService" />
+	<bean id="apparelUserServiceImpl" class="com.ldr.core.user.impl.ApparelUserServiceImpl"
+		parent="defaultUserService">
+		<property name="apparelUserDao" ref="userDao" />
+	</bean>
+
+	<alias name="defaultBrandInterceptor" alias="brandInterceptor" />
+	<bean id="defaultBrandInterceptor" class="com.ldr.core.intrceptors.BrandInterceptor" />
+
+	<bean id="BrandInterceptorMapping"
+		class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+		<property name="interceptor" ref="brandInterceptor" />
+		<property name="typeCode" value="Brand" />
+		<property name="order" value="5000" />
+	</bean>
+
+	<alias name="defaultCustomerAgeDynamicAttributHandler" alias="customerAgeDynamicAttributHandler"/>
+	<bean id="defaultCustomerAgeDynamicAttributHandler" class="com.ldr.core.attributehandler.CustomerAgeDynamicAttributHandler"/>
 	
 </beans>

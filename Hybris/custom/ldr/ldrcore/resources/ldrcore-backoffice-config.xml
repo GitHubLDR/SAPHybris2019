@@ -108,5 +108,48 @@
             </tab>
         </editorArea:editorArea>
     </context>
+    
+<context type="Brand" component="create-wizard">
+<wz:flow xmlns:wz="http://www.hybris.com/cockpitng/config/wizard-config" id="ProductWizard" title="create.product.title">
+	<wz:prepare id="brandPrepare">
+		<wz:initialize property="newBrand" type="Brand"/>
+		<wz:assign property="newBrand.code" value="ctx.code"/>
+	</wz:prepare>
+	<wz:step id="step1" label="create.product.essential.label" sublabel="create.product.essential.sublabel">
+		<wz:info id="step1.intro" label="create.product.essential.intro" position="top"/>
+		<wz:content id="step1.content">
+			<wz:property-list root="newBrand">
+				<wz:property qualifier="code" type="java.lang.String"/>
+				<wz:property qualifier="catalogVersion"/>
+			</wz:property-list>
+		</wz:content>
+		<wz:navigation id="step1.navigation">
+			<wz:cancel/>
+			<wz:next visible="!#empty(newBrand.code) and (newBrand.catalogVersion!=null)"/>
+			<wz:done visible="!#empty(newBrand.code) and newBrand.catalogVersion !=null">
+				<wz:save property="newBrand"/>
+			</wz:done>
+		</wz:navigation>
+	</wz:step>
+	<wz:step id="step2" label="create.product.descriptions.label" sublabel="create.product.descriptions.sublabel">
+		<wz:content id="step2.content">
+			<wz:info id="step2.intro" label="create.product.descriptions.intro" position="top"/>
+			<wz:property-list root="newBrand">
+				<wz:property qualifier="name" type="java.lang.String"/>
+				<wz:property editor="com.hybris.cockpitng.editor.wysiwyg" qualifier="description" type="java.lang.String"/>
+			</wz:property-list>
+		</wz:content>
+		<wz:navigation id="step2.navigation">
+			<wz:cancel/>
+			<wz:back/>
+			<wz:done>
+				<wz:save property="newBrand"/>
+			</wz:done>
+		</wz:navigation>
+	</wz:step>
+</wz:flow>
+</context>
+    
+    
         
  </config>

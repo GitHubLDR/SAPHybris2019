@@ -70,6 +70,8 @@
     <extension name='instore' />
 	
     <extension name='promotionengineservices' />
+    
+    <extension name='wishlist'/>
 	
 <extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/ldr/ldrfulfilmentprocess"/>
 <extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/ldr/ldrcockpits"/>

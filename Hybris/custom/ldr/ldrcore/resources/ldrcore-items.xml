@@ -188,6 +188,13 @@
             
             <itemtype code="Brand" autocreate="true" generate="true">
             	<deployment table="brand" typecode="12010"/>
+            	<custom-properties>
+					<property name="catalogItemType"><value>java.lang.Boolean.TRUE</value></property>
+					<property name="catalogVersionAttributeQualifier"><value>"catalogVersion"</value></property>
+					<property name="uniqueKeyAttributeQualifier"><value>"code"</value></property>
+					<property name="catalog.sync.default.root.type"><value>Boolean.TRUE</value></property>
+					<property name="catalog.sync.default.root.type.order"><value>Integer.valueOf(2)</value></property>
+				</custom-properties>
             	 <attributes>
             	 	<attribute type="java.lang.String" qualifier="code">
 						<persistence type="property"/>
@@ -196,9 +203,23 @@
 						<persistence type="property"/>
             	 	</attribute>
             	 	<attribute type="java.lang.String" qualifier="description">
-						<persistence type="property"/>
+						<persistence type="property" attributeHandler=""/>
             	 	</attribute>
+            	 	<attribute qualifier="catalog" type="Catalog">
+					<modifiers read="true" write="true" search="true" optional="false" private="true"/>
+					<persistence type="property"/>
+				</attribute>
+				<attribute qualifier="catalogVersion" type="CatalogVersion">
+					<modifiers read="true" write="true" search="true" optional="false" unique="true"/>
+					<persistence type="property"/>
+				</attribute>
             	 </attributes>
+            	 <indexes>
+                <index name="Brand_Code">
+                    <key attribute="code"/>
+                </index>
+            </indexes>
+            	 
             </itemtype>
 
             <itemtype code="ApparelStyleVariantProduct" extends="VariantProduct"
@@ -233,10 +254,24 @@
    				</attribute>
    			</attributes>
    		 </itemtype>
+   		 
+   		 <itemtype code="Customer" autocreate="false" generate="true">
+   		 	<attributes>
+   		 	<attribute type="java.lang.String" qualifier="mobileNumber">
+   		 			 <modifiers/>
+   		 			 <persistence type="property"/>
+   		 		</attribute>
+   		 		<attribute type="java.util.Date" qualifier="dateOfBirth">
+   		 			 <modifiers/>
+   		 			 <persistence type="property"/>
+   		 		</attribute>
+   		 		<attribute type="java.lang.Integer" qualifier="age">
+   		 			<modifiers/>
+   		 			<persistence type="dynamic" attributeHandler="customerAgeDynamicAttributHandler"/>
+   		 		</attribute>
+   		 	</attributes>
+   		 </itemtype>
             
-            
-            
-
             <itemtype code="ApparelSizeVariantProduct" extends="ApparelStyleVariantProduct"
                       autocreate="true" generate="true"
                       jaloclass="com.ldr.core.jalo.ApparelSizeVariantProduct">
