@@ -588,4 +588,8 @@
 	<alias name="ldrCustomerAccountServiceImpl" alias="customerAccountService"/>
 	<bean id="ldrCustomerAccountServiceImpl" class="de.hybris.platform.commerceservices.customer.impl.LDRCustomerAccountServiceImpl" parent="defaultCustomerAccountService"/>
 	
+	
+	<alias name="apparelSolrIndexerJob" alias="solrIndexerJob"/>
+	<bean id="apparelSolrIndexerJob" class="com.ldr.solrfacetsearch.indexer.cron.ApparelSolrIndexerJob" parent="abstractIndexerJob" />
+	
 </beans>
