@@ -73,15 +73,15 @@
     
     <extension name='wishlist'/>
 	
-<extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/ldr/ldrfulfilmentprocess"/>
-<extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/ldr/ldrcockpits"/>
-<extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/ldr/ldrcore"/>
-<extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/ldr/ldrfacades"/>
-<extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/ldr/ldrtest"/>
-<extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/ldr/ldrinitialdata"/>
-<extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/ldr/ldrstorefront"/>
+<extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\repo\SAPHybris2019\Hybris\custom\ldr/ldrfulfilmentprocess"/>
+<extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\repo\SAPHybris2019\Hybris\custom\ldr/ldrcockpits"/>
+<extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\repo\SAPHybris2019\Hybris\custom\ldr/ldrcore"/>
+<extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\repo\SAPHybris2019\Hybris\custom\ldr/ldrfacades"/>
+<extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\repo\SAPHybris2019\Hybris\custom\ldr/ldrtest"/>
+<extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\repo\SAPHybris2019\Hybris\custom\ldr/ldrinitialdata"/>
+<extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\repo\SAPHybris2019\Hybris\custom\ldr/ldrstorefront"/>
 
-<extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\hybris\bin/custom/ldr/ldrpromotions"/>
+<extension dir="D:\Softwares\Hybris_Installations\Hybris_6.5\repo\SAPHybris2019\Hybris\custom\ldr/ldrpromotions"/>
 
 	
   </extensions>
