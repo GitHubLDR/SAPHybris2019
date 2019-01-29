@@ -39,3 +39,6 @@ INSERT_UPDATE BaseStore;uid[unique=true];catalogs(id);currencies(isocode);net;ta
 ;$storeUid;$productCatalog,$classificationCatalog;$currencies;$net;jp-taxes;km;$defaultCurrency;$languages;$defaultLanguage;$deliveryCountries;$orderProcessCode;$pickupInStoreMode;$customerAllowedToIgnoreSuggestions;$paymentProvider;$checkoutFlowGroup;
 
 INSERT_UPDATE BaseStore2DeliveryModeRel;source(uid)[unique=true];target(code)[unique=true]
+
+UPDATE BaseStore;uid[unique=true];currencies(isocode);defaultCurrency(isocode);
+;apparel-uk;INR;INR
