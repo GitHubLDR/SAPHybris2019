@@ -4,10 +4,12 @@
 package com.ldr.core.student.dao;
 
 import de.hybris.platform.core.model.enumeration.EnumerationValueModel;
+import de.hybris.platform.servicelayer.internal.dao.DefaultGenericDao;
 import de.hybris.platform.servicelayer.model.ModelService;
 import de.hybris.platform.servicelayer.search.FlexibleSearchService;
 import de.hybris.platform.servicelayer.search.SearchResult;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,8 +22,18 @@ import com.ldr.core.model.StudentModel;
  * @author devreddy
  *
  */
-public class StudentDAOImpl implements StudentDAO
+public class StudentDAOImpl extends DefaultGenericDao implements StudentDAO
 {
+
+	/**
+	 * @param typecode
+	 */
+	public StudentDAOImpl(final String typecode)
+	{
+		super(typecode);
+	}
+
+
 
 	private FlexibleSearchService flexibleSearchService;
 
@@ -54,6 +66,7 @@ public class StudentDAOImpl implements StudentDAO
 	/**
 	 * @return the flexibleSearchService
 	 */
+	@Override
 	public FlexibleSearchService getFlexibleSearchService()
 	{
 		return flexibleSearchService;
@@ -63,6 +76,7 @@ public class StudentDAOImpl implements StudentDAO
 	 * @param flexibleSearchService
 	 *           the flexibleSearchService to set
 	 */
+	@Override
 	public void setFlexibleSearchService(final FlexibleSearchService flexibleSearchService)
 	{
 		this.flexibleSearchService = flexibleSearchService;
@@ -141,6 +155,26 @@ public class StudentDAOImpl implements StudentDAO
 		final SearchResult<EnumerationValueModel> searchResults = flexibleSearchService.search(query);
 
 		return searchResults.getResult();
+	}
+
+
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see com.ldr.core.student.dao.StudentDAO#getStudentByIdGenric(java.lang.String)
+	 */
+	@Override
+	public StudentModel getStudentByIdGenric(final String studentId)
+	{
+		// YTODO Auto-generated method stub
+		final List<StudentModel> studentModel = find(Collections.singletonMap(StudentModel.ID, (Object) studentId));
+
+		if (CollectionUtils.isNotEmpty(studentModel))
+		{
+			return studentModel.get(0);
+		}
+		return null;
 	}
 
 }

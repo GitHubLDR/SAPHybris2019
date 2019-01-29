@@ -3,7 +3,6 @@
  */
 package com.ldr.core.student.service;
 
-import de.hybris.platform.core.model.enumeration.EnumerationValueModel;
 import de.hybris.platform.servicelayer.event.EventService;
 import de.hybris.platform.servicelayer.i18n.CommonI18NService;
 import de.hybris.platform.site.BaseSiteService;
@@ -48,7 +47,7 @@ public class StudnetServiceImpl implements StudentService
 	@Override
 	public StudentModel getStudentById(final String studentId)
 	{
-		return studentDAO.getStudentById(studentId);
+		return studentDAO.getStudentByIdGenric(studentId);
 	}
 
 	/**

@@ -20,6 +20,8 @@ public interface StudentDAO
 
 	public StudentModel getStudentById(String studentId);
 
+	public StudentModel getStudentByIdGenric(String studentId);
+
 	public void doStudentRegistration(StudentModel studentModel);
 
 	public List<EnumerationValueModel> getStudentType();
