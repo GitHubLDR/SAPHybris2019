@@ -26,7 +26,10 @@ public class LDRCustomerPopulator extends CustomerPopulator
 	{
 		// YTODO Auto-generated method stub
 		super.populate(source, target);
-		target.setAge(source.getAge());
+		if (null != source.getDateOfBirth())
+		{
+			target.setAge(source.getAge());
+		}
 		target.setDateOfBirth(source.getDateOfBirth());
 		target.setMobileNumber(source.getMobileNumber());
 	}

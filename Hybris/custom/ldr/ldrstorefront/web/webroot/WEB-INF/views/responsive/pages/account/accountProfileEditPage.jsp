@@ -19,12 +19,13 @@
         <div class="account-section-content">
             <div class="account-section-form">
                 <form:form action="update-profile" method="post" commandName="updateProfileForm">
-
+					
                     <formElement:formSelectBox idKey="profile.title" labelKey="profile.title" path="titleCode" mandatory="true" skipBlank="false" skipBlankMessageKey="form.select.empty" items="${titleData}" selectCSSClass="form-control"/>
                     <formElement:formInputBox idKey="profile.firstName" labelKey="profile.firstName" path="firstName" inputCSS="text" mandatory="true"/>
                     <formElement:formInputBox idKey="profile.lastName" labelKey="profile.lastName" path="lastName" inputCSS="text" mandatory="true"/>
                     <formElement:formInputBox idKey="profile.mobileNumber" labelKey="profile.mobileNumber" path="mobileNumber" inputCSS="text" mandatory="true"/>
                     <formElement:formInputBox idKey="profile.dateOfBirth" labelKey="profile.dateOfBirth" path="dateOfBirth" inputCSS="text" mandatory="true"/>
+            	 	  <spring:theme code="text.account.profile.age" text="Age :: "/>${customerAge}
                     
 
                     <div class="row">

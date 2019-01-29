@@ -75,15 +75,15 @@ public class LDRProfileValidator extends ProfileValidator
 	 */
 	private void validateDate(final String dateOfBirth, final Errors errors)
 	{
-		if (StringUtils.isEmpty(dateOfBirth))
-		{
-			errors.rejectValue("dateOfBirth", "register.dateOfBirth.notEmpty");
-		}
 		final Pattern pattern = Pattern.compile("^[0-9]{4}/(1[0-2]|0[1-9])/(3[01]|[12][0-9]|0[1-9])$");
 		final Matcher matcher = pattern.matcher(dateOfBirth);
-		if (!matcher.matches())
+		if (StringUtils.isEmpty(dateOfBirth))
 		{
-			errors.rejectValue("dateOfBirth", "register.dateOfBirth.invalid");
+			errors.rejectValue("dateOfBirth", "profile.dateOfBirth.notEmpty");
+		}
+		else if (!matcher.matches())
+		{
+			errors.rejectValue("dateOfBirth", "profile.dateOfBirth.invalid");
 		}
 
 	}
@@ -94,13 +94,13 @@ public class LDRProfileValidator extends ProfileValidator
 	 */
 	private void validateMobileNumber(final String mobileNumber, final Errors errors)
 	{
+		final Pattern pattern = Pattern.compile("[0-9]{10}");
+		final Matcher matcher = pattern.matcher(mobileNumber);
 		if (StringUtils.isEmpty(mobileNumber))
 		{
 			errors.rejectValue("mobileNumber", "register.mobileNumber.notEmpty");
 		}
-		final Pattern pattern = Pattern.compile("[0-9]{10}");
-		final Matcher matcher = pattern.matcher(mobileNumber);
-		if (!matcher.matches())
+		else if (!matcher.matches())
 		{
 			errors.rejectValue("mobileNumber", "register.mobileNumber.invalid");
 		}

@@ -486,6 +486,8 @@ public class AccountPageController extends AbstractSearchPageController
 		updateProfileForm.setDateOfBirth(simpleDateFormat.format(customerData.getDateOfBirth()));
 
 		model.addAttribute("updateProfileForm", updateProfileForm);
+		model.addAttribute("customerAge", customerData.getAge().toString());
+
 
 		storeCmsPageInModel(model, getContentPageForLabelOrId(UPDATE_PROFILE_CMS_PAGE));
 		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(UPDATE_PROFILE_CMS_PAGE));
@@ -506,6 +508,7 @@ public class AccountPageController extends AbstractSearchPageController
 		String returnAction = REDIRECT_TO_UPDATE_PROFILE;
 		final CustomerData currentCustomerData = customerFacade.getCurrentCustomer();
 		model.addAttribute(TITLE_DATA_ATTR, userFacade.getTitles());
+		model.addAttribute("customerAge", currentCustomerData.getAge().toString());
 
 		if (bindingResult.hasErrors())
 		{

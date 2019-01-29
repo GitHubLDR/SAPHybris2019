@@ -33,6 +33,7 @@
 	<formElement:formInputBox idKey="register.mobileNumber"
 		labelKey="register.mobileNumber" path="mobileNumber" inputCSS="form-control"
 		mandatory="true" />
+		dsfsdfdfd${path}
 	<formElement:formInputBox idKey="register.dateOfBirth"
 		labelKey="register.dateOfBirth" path="dateOfBirth" inputCSS="form-control"
 		mandatory="true" />
