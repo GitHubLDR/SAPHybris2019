@@ -332,5 +332,14 @@
 	<bean id="defaultCsrfProtectionMatcher" class="com.ldr.storefront.security.CsrfProtectionMatcher">
 		<property name="csrfAllowedUrlPatterns" ref="csrfAllowedUrlPatternsList"/>
 	</bean>
+	
+	<security:authentication-manager>
+		<security:authentication-provider ref="coreAuthenticationProvider" />
+	</security:authentication-manager>
+	
+	<alias name="apparelCoreAuthenticationProvider" alias="coreAuthenticationProvider"/>
+	<bean id="apparelCoreAuthenticationProvider" class="com.ldr.core.spring.security.ApparelCoreAuthenticationProvider">
+			<property name="userDetailsService" ref="originalUidUserDetailsService" />
+		</bean>
 
 </beans>

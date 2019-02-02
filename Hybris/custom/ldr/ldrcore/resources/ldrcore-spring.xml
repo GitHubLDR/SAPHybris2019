@@ -543,6 +543,7 @@
 	
 	<alias name="defaultStudentDAOImpl" alias="studentDAO"/>
 	<bean id="defaultStudentDAOImpl" class="com.ldr.core.student.dao.StudentDAOImpl">
+		<constructor-arg value="Student"/>
 		<property name="flexibleSearchService" ref="flexibleSearchService"/>
 		<property name="modelService" ref="modelService"/>
 	</bean>
@@ -591,5 +592,11 @@
 	
 	<alias name="apparelSolrIndexerJob" alias="solrIndexerJob"/>
 	<bean id="apparelSolrIndexerJob" class="com.ldr.solrfacetsearch.indexer.cron.ApparelSolrIndexerJob" parent="abstractIndexerJob" />
+	
+	<alias name="apparelOriginalUidUserDetailsService" alias="originalUidUserDetailsService"/>
+	<bean id="apparelOriginalUidUserDetailsService" class="com.ldr.core.spring.security.ApparelOriginalUidUserDetailsService"/>
+	
+	<alias alias="core.userManager" name="ldr.core.userManager"/>
+	<bean id="ldr.core.userManager" class="com.ldr.core.jalo.user.ApparelUserManager" init-method="init"/>
 	
 </beans>
